@@ -63,7 +63,13 @@ struct log_ATT_s {
 	float pitch_rate;
 	float yaw_rate;
 };
-
+#define LOG_INDI_MSG 64
+struct log_INDI_s {
+    float g1_p;
+    float g1_q;
+    float g1_r;
+    float g2_r;
+};
 /* --- ATSP - ATTITUDE SET POINT --- */
 #define LOG_ATSP_MSG 3
 struct log_ATSP_s {

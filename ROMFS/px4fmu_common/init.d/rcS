@@ -622,13 +622,13 @@ then
 						set TTYS1_BUSY yes
 					fi
 				fi
-			fi
+                        fi
 		fi
 	fi
 
 	if [ $MAVLINK_F == default ]
 	then
-		# Normal mode, use baudrate 57600 (default) and data rate 1000 bytes/s
+                # Normal mode, use baudrate 57600 (default) and data rate 1000 bytes/s
 		if [ $TTYS1_BUSY == yes ]
 		then
 			# Start MAVLink on ttyS0, because FMU ttyS1 pins configured as something else
@@ -681,27 +681,27 @@ then
 		if param compare SYS_COMPANION 20
 		then
 			syslink start
-			mavlink start -d /dev/bridge0 -b 57600 -m osd -r 40000
+                        mavlink start -d /dev/bridge0 -b 57600 -m osd -r 40000
 		fi
 		if param compare SYS_COMPANION 921600
 		then
 			mavlink start -d ${MAVLINK_COMPANION_DEVICE} -b 921600 -m onboard -r 80000 -x
 		fi
-		if param compare SYS_COMPANION 57600
+                if param compare SYS_COMPANION 57600
 		then
-			mavlink start -d ${MAVLINK_COMPANION_DEVICE} -b 57600 -m onboard -r 5000 -x
+                        mavlink start -d ${MAVLINK_COMPANION_DEVICE} -b 57600 -m onboard -r 5000 -x
 		fi
 		if param compare SYS_COMPANION 460800
 		then
 			mavlink start -d ${MAVLINK_COMPANION_DEVICE} -b 460800 -m onboard -r 5000 -x
 		fi
-		if param compare SYS_COMPANION 157600
+                if param compare SYS_COMPANION 157600
 		then
-			mavlink start -d ${MAVLINK_COMPANION_DEVICE} -b 57600 -m osd -r 1000
+                        mavlink start -d ${MAVLINK_COMPANION_DEVICE} -b 57600 -m osd -r 1000
 		fi
-		if param compare SYS_COMPANION 257600
+                if param compare SYS_COMPANION 257600
 		then
-			mavlink start -d ${MAVLINK_COMPANION_DEVICE} -b 57600 -m magic -r 5000 -x
+                        mavlink start -d ${MAVLINK_COMPANION_DEVICE} -b 57600 -m magic -r 5000 -x
 		fi
 		if param compare SYS_COMPANION 319200
 		then
@@ -711,9 +711,9 @@ then
 		then
 			mavlink start -d ${MAVLINK_COMPANION_DEVICE} -b 38400 -r 1000
 		fi
-		if param compare SYS_COMPANION 357600
+                if param compare SYS_COMPANION 357600
 		then
-			mavlink start -d ${MAVLINK_COMPANION_DEVICE} -b 57600 -r 1000
+                        mavlink start -d ${MAVLINK_COMPANION_DEVICE} -b 57600 -r 1000
 		fi
 		if param compare SYS_COMPANION 3115200
 		then

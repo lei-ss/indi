@@ -65,6 +65,7 @@ set(msg_file_names
 	gps_inject_data.msg
 	hil_sensor.msg
 	home_position.msg
+	indi.msg
 	input_rc.msg
 	led_control.msg
 	log_message.msg

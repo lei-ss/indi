@@ -24,5 +24,6 @@ then
 	param set MC_YAWRATE_I 0.1
 	param set MC_YAWRATE_D 0.0
 	# DJI ESCs do not support calibration and need a higher min
-	param set PWM_MIN 1230
+        param set PWM_MIN 1050
 fi
+param set PWM_MIN 1000

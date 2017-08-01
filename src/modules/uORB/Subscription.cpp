@@ -64,6 +64,7 @@
 #include "topics/vehicle_local_position_setpoint.h"
 #include "topics/vehicle_rates_setpoint.h"
 #include "topics/vehicle_status.h"
+#include "topics/indi.h"
 
 #include <px4_defines.h>
 
@@ -178,5 +179,6 @@ template class __EXPORT Subscription<vehicle_local_position_s>;
 template class __EXPORT Subscription<vehicle_local_position_setpoint_s>;
 template class __EXPORT Subscription<vehicle_rates_setpoint_s>;
 template class __EXPORT Subscription<vehicle_status_s>;
+template class __EXPORT Subscription<indi_s>;
 
 } // namespace uORB

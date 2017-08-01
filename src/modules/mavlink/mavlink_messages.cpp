@@ -91,6 +91,7 @@
 #include <uORB/topics/wind_estimate.h>
 #include <uORB/topics/mount_orientation.h>
 #include <uORB/topics/collision_report.h>
+#include <uORB/topics/indi.h>
 #include <uORB/uORB.h>
 
 
@@ -788,6 +789,71 @@ protected:
 	}
 };
 
+
+class MavlinkStreamIndi : public MavlinkStream
+{
+public:
+    const char *get_name() const
+    {
+        return MavlinkStreamIndi::get_name_static();
+    }
+
+    static const char *get_name_static()
+    {
+        return "INDI";
+    }
+
+    static uint16_t get_id_static()
+    {
+        return MAVLINK_MSG_ID_INDI;
+    }
+
+    uint16_t get_id()
+    {
+        return get_id_static();
+    }
+
+    static MavlinkStream *new_instance(Mavlink *mavlink)
+    {
+        return new MavlinkStreamIndi(mavlink);
+    }
+
+    unsigned get_size()
+    {
+        return MAVLINK_MSG_ID_INDI_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES;
+    }
+
+private:
+    MavlinkOrbSubscription *_indi_sub;
+    uint64_t _indi_time;
+
+    /* do not allow top copying this class */
+    MavlinkStreamIndi(MavlinkStreamIndi &);
+    MavlinkStreamIndi &operator = (const MavlinkStreamIndi &);
+
+
+protected:
+    explicit MavlinkStreamIndi(Mavlink *mavlink) : MavlinkStream(mavlink),
+        _indi_sub(_mavlink->add_orb_subscription(ORB_ID(indi))),
+        _indi_time(0)
+    {}
+
+    void send(const hrt_abstime t)
+    {
+        struct indi_s indi;
+
+        if (_indi_sub->update(&_indi_time, &indi)) {
+            //printf("send--------------\r\n");
+            mavlink_indi_t msg = {};
+            msg.time_usec = indi.timestamp;
+            msg.g1_p = indi.g1_p;
+            msg.g1_q = indi.g1_q;
+            msg.g1_r = indi.g1_r;
+            msg.g2_r = indi.g2_r;
+            mavlink_msg_indi_send_struct(_mavlink->get_channel(), &msg);
+        }
+    }
+};
 
 class MavlinkStreamAttitude : public MavlinkStream
 {
@@ -4076,7 +4142,8 @@ const StreamListItem *streams_list[] = {
 	new StreamListItem(&MavlinkStreamSysStatus::new_instance, &MavlinkStreamSysStatus::get_name_static, &MavlinkStreamSysStatus::get_id_static),
 	new StreamListItem(&MavlinkStreamHighresIMU::new_instance, &MavlinkStreamHighresIMU::get_name_static, &MavlinkStreamHighresIMU::get_id_static),
 	new StreamListItem(&MavlinkStreamAttitude::new_instance, &MavlinkStreamAttitude::get_name_static, &MavlinkStreamAttitude::get_id_static),
-	new StreamListItem(&MavlinkStreamAttitudeQuaternion::new_instance, &MavlinkStreamAttitudeQuaternion::get_name_static, &MavlinkStreamAttitudeQuaternion::get_id_static),
+    new StreamListItem(&MavlinkStreamIndi::new_instance,&MavlinkStreamIndi::get_name_static,&MavlinkStreamIndi::get_id_static),
+    new StreamListItem(&MavlinkStreamAttitudeQuaternion::new_instance, &MavlinkStreamAttitudeQuaternion::get_name_static, &MavlinkStreamAttitudeQuaternion::get_id_static),
 	new StreamListItem(&MavlinkStreamVFRHUD::new_instance, &MavlinkStreamVFRHUD::get_name_static, &MavlinkStreamVFRHUD::get_id_static),
 	new StreamListItem(&MavlinkStreamGPSRawInt::new_instance, &MavlinkStreamGPSRawInt::get_name_static, &MavlinkStreamGPSRawInt::get_id_static),
 	new StreamListItem(&MavlinkStreamSystemTime::new_instance, &MavlinkStreamSystemTime::get_name_static, &MavlinkStreamSystemTime::get_id_static),

@@ -566,7 +566,7 @@ void Logger::add_default_topics()
 	add_topic("actuator_outputs", 100);
 	add_topic("telemetry_status");
 	add_topic("vehicle_command");
-	add_topic("vtol_vehicle_status", 100);
+    //add_topic("vtol_vehicle_status", 100);//
 	add_topic("commander_state", 100);
 	add_topic("satellite_info");
 	add_topic("vehicle_attitude_setpoint", 30);
@@ -583,15 +583,15 @@ void Logger::add_default_topics()
 	add_topic("system_power", 300);
 	add_topic("position_setpoint_triplet", 200);
 	add_topic("att_pos_mocap", 50);
-	add_topic("optical_flow", 50);
+    //add_topic("optical_flow", 50);
 	add_topic("rc_channels", 100);
 	add_topic("input_rc", 100);
-	add_topic("differential_pressure", 50);
-	add_topic("esc_status", 250);
+    //add_topic("differential_pressure", 50);
+    //add_topic("esc_status", 250);
 	add_topic("estimator_status", 200); //this one is large
 	add_topic("ekf2_innovations", 50);
 	add_topic("tecs_status", 20);
-	add_topic("wind_estimate", 100);
+    //add_topic("wind_estimate", 100);//没必要
 	add_topic("control_state", 100);
 	add_topic("camera_trigger");
 	add_topic("camera_capture");
@@ -599,9 +599,9 @@ void Logger::add_default_topics()
 	add_topic("gps_dump"); //this will only be published if GPS_DUMP_COMM is set
 	add_topic("sensor_preflight", 50);
 	add_topic("task_stack_info");
-
+    add_topic("indi");
 	/* for estimator replay (need to be at full rate) */
-	add_topic("airspeed");
+    //add_topic("airspeed");
 	add_topic("distance_sensor");
 	add_topic("ekf2_timestamps");
 	add_topic("sensor_combined");

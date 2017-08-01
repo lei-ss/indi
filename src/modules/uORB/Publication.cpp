@@ -51,6 +51,7 @@
 #include "topics/vehicle_global_velocity_setpoint.h"
 #include "topics/vehicle_local_position.h"
 #include "topics/vehicle_rates_setpoint.h"
+#include "topics/indi.h"
 
 #include <px4_defines.h>
 
@@ -122,5 +123,6 @@ template class __EXPORT Publication<vehicle_global_position_s>;
 template class __EXPORT Publication<vehicle_global_velocity_setpoint_s>;
 template class __EXPORT Publication<vehicle_local_position_s>;
 template class __EXPORT Publication<vehicle_rates_setpoint_s>;
+template class __EXPORT Publication<indi_s>;
 
 }

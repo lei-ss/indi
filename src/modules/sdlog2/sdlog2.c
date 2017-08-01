@@ -103,7 +103,7 @@
 #include <uORB/topics/commander_state.h>
 #include <uORB/topics/cpuload.h>
 #include <uORB/topics/task_stack_info.h>
-
+#include <uORB/topics/indi.h>
 #include <systemlib/systemlib.h>
 #include <systemlib/param/param.h>
 #include <systemlib/perf_counter.h>
@@ -1169,6 +1169,7 @@ int sdlog2_thread_main(int argc, char *argv[])
 		struct vehicle_command_s cmd;
 		struct sensor_combined_s sensor;
 		struct vehicle_attitude_s att;
+        struct indi_s indi;
 		struct vehicle_attitude_setpoint_s att_sp;
 		struct vehicle_rates_setpoint_s rates_sp;
 		struct actuator_outputs_s act_outputs;
@@ -1218,6 +1219,7 @@ int sdlog2_thread_main(int argc, char *argv[])
 		union {
 			struct log_TIME_s log_TIME;
 			struct log_ATT_s log_ATT;
+            struct log_INDI_s log_INDI;
 			struct log_ATSP_s log_ATSP;
 			struct log_IMU_s log_IMU;
 			struct log_SENS_s log_SENS;
@@ -1283,6 +1285,7 @@ int sdlog2_thread_main(int argc, char *argv[])
 		int vtol_status_sub;
 		int sensor_sub;
 		int att_sub;
+        int indi_sub;
 		int att_sp_sub;
 		int rates_sp_sub;
 		int act_outputs_sub;
@@ -1331,6 +1334,7 @@ int sdlog2_thread_main(int argc, char *argv[])
 	subs.gps_pos_sub[1] = -1;
 	subs.sensor_sub = -1;
 	subs.att_sub = -1;
+    subs.indi_sub = -1;
 	subs.att_sp_sub = -1;
 	subs.rates_sp_sub = -1;
 	subs.act_outputs_sub = -1;
@@ -2288,7 +2292,15 @@ int sdlog2_thread_main(int argc, char *argv[])
 			log_msg.body.log_ATT.yaw_rate = buf.att.yawspeed;
 			LOGBUFFER_WRITE_AND_COUNT(ATT);
 		}
-
+        /* --- INDI --- */
+        if(copy_if_updated(ORB_ID(indi),&subs.indi_sub,&buf.indi)) {
+            log_msg.msg_type = LOG_INDI_MSG;
+            log_msg.body.log_INDI.g1_p = buf.indi.g1_p;
+            log_msg.body.log_INDI.g1_q = buf.indi.g1_q;
+            log_msg.body.log_INDI.g1_r = buf.indi.g1_r;
+            log_msg.body.log_INDI.g2_r = buf.indi.g2_r;
+            LOGBUFFER_WRITE_AND_COUNT(INDI);
+        }
 		/* --- CAMERA TRIGGER --- */
 		if (copy_if_updated(ORB_ID(camera_trigger), &subs.cam_trig_sub, &buf.camera_trigger)) {
 			log_msg.msg_type = LOG_CAMT_MSG;

@@ -36,7 +36,7 @@ then
 fi
 #---------------------------------------
 
-mc_att_control start
+mc_att_control_indi start
 
 mc_pos_control start
 
